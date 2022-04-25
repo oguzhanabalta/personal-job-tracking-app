@@ -1,3 +1,22 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "next",
+    "prettier"
+  ],
+  "rules": {
+    "@next/next/no-title-in-document-head": "off",
+    "react/display-name": "off",
+    "react/forbid-elements": [
+      "error",
+      {
+        "forbid": [
+          {
+            "element": "Collection",
+            "message": "Collection is deprecated. Use data.map() instead"
+          }
+        ]
+      }
+    ]
+  }
 }
