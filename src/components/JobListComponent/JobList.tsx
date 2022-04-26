@@ -19,7 +19,22 @@ import Box from "@mui/material/Box";
 import {CreateButton, CreateIcon, StyledTableCell, StyledTableRow, Text, Title} from "./styles";
 
 
-export default function JobListComponent({jobsData, jobPriority}: any) {
+export default function JobListComponent() {
+    const [jobsData, setJobData] = useState<any>([]);
+    const jobPriority = [
+        {
+            value: 'High',
+            label: 'High'
+        },
+        {
+            value: 'Medium',
+            label: 'Medium'
+        },
+        {
+            value: 'Low',
+            label: 'Low'
+        }
+    ];
 
     const [jobName, setJobName] = useState<string>("");
     const [jobStatus, setJobStatus] = useState("High");
@@ -35,14 +50,17 @@ export default function JobListComponent({jobsData, jobPriority}: any) {
         setJobName("");
         setJobStatus("");
         toast.success("Job added successfully");
+    }
 
+    function handle_click_delete_job(target_index: number) {
+        setJobData(jobsData.filter((_: any, index: any) => index !== target_index));
+        toast.success("Job deleted successfully");
     }
 
     function handle_change_job_status(event: React.ChangeEvent<{ value: unknown }>) {
         setJobStatus(event.target.value as string);
     }
 
-    console.log(jobsData.length);
 
     return (
         <Stack sx={{display: "flex", flexDirection: "column", mt: 3, mb: 30}}>
@@ -138,8 +156,8 @@ export default function JobListComponent({jobsData, jobPriority}: any) {
                     </TableHead>
 
                     <TableBody>
-                        {jobsData?.map((row: any) => (
-                            <StyledTableRow key={row.name}>
+                        {jobsData?.map((row: any, index: any) => (
+                            <StyledTableRow key={index}>
                                 <StyledTableCell component="th" scope="row">
                                     {row.name}
                                 </StyledTableCell>
@@ -148,7 +166,7 @@ export default function JobListComponent({jobsData, jobPriority}: any) {
                                     <IconButton>
                                         <EditRounded/>
                                     </IconButton>
-                                    <IconButton>
+                                    <IconButton onClick={() => handle_click_delete_job(index)}>
                                         <DeleteRounded/>
                                     </IconButton>
                                 </StyledTableCell>
