@@ -1,6 +1,4 @@
-import React from 'react';
-import {styled} from '@mui/material/styles';
-import TableCell, {tableCellClasses} from '@mui/material/TableCell';
+import React, {useState} from 'react';
 import TableRow from '@mui/material/TableRow';
 import {
     IconButton,
@@ -16,54 +14,84 @@ import {
 } from "@mui/material";
 import {DeleteRounded, EditRounded, SearchRounded} from "@mui/icons-material";
 import Paper from '@mui/material/Paper';
+import {toast} from "react-hot-toast";
+import Box from "@mui/material/Box";
+import {CreateButton, CreateIcon, StyledTableCell, StyledTableRow, Text, Title} from "./styles";
 
-const jobsData = [
-    {
-        id: 1,
-        name: "Job 1",
-        status: "High",
-    },
-    {
-        id: 2,
-        name: "Job 2",
-        status: "High",
 
-    },
-    {
-        id: 3,
-        name: "Job 3",
-        status: "High",
-        updatedDate: "2020-01-01",
-    },
-    {
-        id: 4,
-        name: "Job 4",
-        status: "High",
+export default function JobListComponent({jobsData, jobPriority}: any) {
+
+    const [jobName, setJobName] = useState<string>("");
+    const [jobStatus, setJobStatus] = useState("High");
+
+
+    function handle_click_add_job() {
+        const newJob = {
+            id: jobsData.length + 1,
+            name: jobName,
+            status: jobStatus,
+        };
+        jobsData.push(newJob);
+        setJobName("");
+        setJobStatus("");
+        toast.success("Job added successfully");
+
     }
-]
 
-const jobPriorityType = [
-    {
-        value: '0',
-        label: 'High'
-    },
-    {
-        value: '1',
-        label: 'Medium'
-    },
-    {
-        value: '2',
-        label: 'Low'
+    function handle_change_job_status(event: React.ChangeEvent<{ value: unknown }>) {
+        setJobStatus(event.target.value as string);
     }
-];
 
-
-export default function JobListComponent() {
-
+    console.log(jobsData.length);
 
     return (
+        <Stack sx={{display: "flex", flexDirection: "column", mt: 3, mb: 30}}>
+            <Stack>
+                <Box sx={{display: "flex", justifyContent: "flex-start"}}>
+                    <Title>
+                        Create new job
+                    </Title>
+                </Box>
 
-        <Stack sx={{display: "flex", flexDirection: "column", mt: 3}}>
+                <Stack sx={{
+                    display: "grid",
+                    gridTemplateColumns: "3fr 2fr 1fr",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    mb: 8
+                }}>
+                    <TextField
+                        id="standard-basic"
+                        margin="normal"
+                        value={jobName}
+                        onChange={(event) => setJobName(event.target.value)}
+                        label="Job Name"
+                    />
+                    <TextField
+                        select
+                        id="standard-basic"
+                        margin="normal"
+                        label="Job Priority"
+                        value={jobStatus}
+                        onChange={handle_change_job_status}
+                        sx={{ml: 2, width: "auto"}}>
+                        {
+                            jobPriority.map((option: any) => {
+                                return (
+                                    <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                                )
+                            })
+                        }
+                    </TextField>
+
+                    <CreateButton variant={"contained"} onClick={handle_click_add_job}>
+                        <CreateIcon/>
+                        create
+                    </CreateButton>
+                </Stack>
+            </Stack>
+
+
             <Stack sx={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <Typography>Job List</Typography>
                 <Typography>(3/3)</Typography>
@@ -91,7 +119,7 @@ export default function JobListComponent() {
                            label="Job Priority(All)"
                            sx={{ml: 2}}>
                     {
-                        jobPriorityType.map((option) => {
+                        jobPriority.map((option: any) => {
                             return (
                                 <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                             )
@@ -108,8 +136,9 @@ export default function JobListComponent() {
                             <StyledTableCell align="right">Action</StyledTableCell>
                         </TableRow>
                     </TableHead>
+
                     <TableBody>
-                        {jobsData.map((row) => (
+                        {jobsData?.map((row: any) => (
                             <StyledTableRow key={row.name}>
                                 <StyledTableCell component="th" scope="row">
                                     {row.name}
@@ -128,6 +157,17 @@ export default function JobListComponent() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            {
+                jobsData.length < 1 ?
+                    <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
+
+                        <img src="/empty_todos.svg"/>
+                        <Title>No Jobs Found</Title>
+                        <Text>Here you will be able to see the jobs you have created and their
+                            priorities.</Text>
+                    </Stack>
+                    : null
+            }
 
 
         </Stack>
@@ -136,23 +176,3 @@ export default function JobListComponent() {
     );
 }
 
-
-const StyledTableCell = styled(TableCell)(({theme}) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: "#f1f4ff",
-        color: theme.palette.common.black,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({theme}) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
