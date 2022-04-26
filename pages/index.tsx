@@ -19,11 +19,7 @@ export default function Index() {
                 <CreateJobComponent/>
                 <JobListComponent/>
             </Stack>
-            <Stack sx={{display: "flex", alignItems: "flex-end"}}>
-                <FooterComponent/>
-
-            </Stack>
-
+            <FooterComponent/>
         </Stack>
 
     );

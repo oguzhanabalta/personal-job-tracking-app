@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {styled} from '@mui/material/styles';
 import TableCell, {tableCellClasses} from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
@@ -17,64 +17,49 @@ import {
 import {DeleteRounded, EditRounded, SearchRounded} from "@mui/icons-material";
 import Paper from '@mui/material/Paper';
 
-
-const StyledTableCell = styled(TableCell)(({theme}) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: "#f1f4ff",
-        color: theme.palette.common.black,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({theme}) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
-
-function createData(
-    name: string,
-    calories: string,
-) {
-    return {name, calories};
-}
-
-const rows = [
-    createData('Frozen yoghurt', "High",),
-    createData('Ice cream sandwich', "High",),
-    createData('Eclair', "Medium",),
-    createData('Cupcake', "Low",),
-    createData('Gingerbread', "Low",),
-];
-
-const jobPriority = [
+const jobsData = [
     {
-        value: 'High',
+        id: 1,
+        name: "Job 1",
+        status: "High",
+    },
+    {
+        id: 2,
+        name: "Job 2",
+        status: "High",
+
+    },
+    {
+        id: 3,
+        name: "Job 3",
+        status: "High",
+        updatedDate: "2020-01-01",
+    },
+    {
+        id: 4,
+        name: "Job 4",
+        status: "High",
+    }
+]
+
+const jobPriorityType = [
+    {
+        value: '0',
         label: 'High'
     },
     {
-        value: 'Medium',
+        value: '1',
         label: 'Medium'
     },
     {
-        value: 'Low',
+        value: '2',
         label: 'Low'
     }
 ];
 
 
 export default function JobListComponent() {
-    const [openModal, setOpenModal] = useState(false);
 
-    function openModalHandler() {
-        setOpenModal(!openModal);
-    }
 
     return (
 
@@ -106,7 +91,7 @@ export default function JobListComponent() {
                            label="Job Priority(All)"
                            sx={{ml: 2}}>
                     {
-                        jobPriority.map((option) => {
+                        jobPriorityType.map((option) => {
                             return (
                                 <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
                             )
@@ -124,12 +109,12 @@ export default function JobListComponent() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {jobsData.map((row) => (
                             <StyledTableRow key={row.name}>
                                 <StyledTableCell component="th" scope="row">
                                     {row.name}
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{row.calories}</StyledTableCell>
+                                <StyledTableCell align="right">{row.status}</StyledTableCell>
                                 <StyledTableCell align="right">
                                     <IconButton>
                                         <EditRounded/>
@@ -150,3 +135,24 @@ export default function JobListComponent() {
 
     );
 }
+
+
+const StyledTableCell = styled(TableCell)(({theme}) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: "#f1f4ff",
+        color: theme.palette.common.black,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({theme}) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
