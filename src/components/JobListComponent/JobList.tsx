@@ -1,6 +1,11 @@
 import React, {useState} from 'react';
 import TableRow from '@mui/material/TableRow';
 import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     IconButton,
     InputAdornment,
     MenuItem,
@@ -10,13 +15,15 @@ import {
     TableContainer,
     TableHead,
     TextField,
-    Typography
+    Typography,
+    useMediaQuery
 } from "@mui/material";
 import {DeleteRounded, EditRounded, SearchRounded} from "@mui/icons-material";
 import Paper from '@mui/material/Paper';
 import {toast} from "react-hot-toast";
 import Box from "@mui/material/Box";
 import {CreateButton, CreateIcon, StyledTableCell, StyledTableRow, Text, Title} from "./styles";
+import {useTheme} from "@mui/system";
 
 
 export default function JobListComponent() {
@@ -38,6 +45,17 @@ export default function JobListComponent() {
 
     const [jobName, setJobName] = useState<string>("");
     const [jobStatus, setJobStatus] = useState("High");
+    const [open, setOpen] = React.useState(false);
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
 
     function handle_click_add_job() {
@@ -163,7 +181,7 @@ export default function JobListComponent() {
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{row.status}</StyledTableCell>
                                 <StyledTableCell align="right">
-                                    <IconButton>
+                                    <IconButton onClick={handleClickOpen}>
                                         <EditRounded/>
                                     </IconButton>
                                     <IconButton onClick={() => handle_click_delete_job(index)}>
@@ -187,10 +205,43 @@ export default function JobListComponent() {
                     : null
             }
 
+            <Dialog
+                fullScreen={fullScreen}
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="responsive-dialog-title"
+
+            >
+                <DialogTitle sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    {"JOB EDİT"}
+                </DialogTitle>
+                <DialogContent>
+                    <TextField
+                        disabled
+                        label={`Job Name`}
+                        sx={{minWidth: "500px", margin: 3}}
+                        value={jobName}
+                    />
+                    <TextField
+                        select
+                        label={`Job Priority`}
+                        sx={{minWidth: "500px", margin: 3}}
+                        value={jobName}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={handleClose}>
+                        CANCEL
+                    </Button>
+                    <Button onClick={handleClose} autoFocus>
+                        SAVE
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
         </Stack>
-
-
     );
 }
+
+
 
