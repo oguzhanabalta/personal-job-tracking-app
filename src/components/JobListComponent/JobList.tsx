@@ -55,16 +55,26 @@ export default function JobListComponent() {
 
     const [jobName, setJobName] = useState<string>("");
     const [jobStatus, setJobStatus] = useState("High");
-    const [open, setOpen] = React.useState(false);
+    const [updateStatus, setUpdateStatus] = useState(jobStatus || "High");
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const [editOpen, setEditOpen] = useState(false);
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [searchJob, setSearchJob] = useState("");
+    const [searchStatus, setSearchStatus] = useState("");
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleClickOpenDeleteDialog = () => {
+        setDeleteOpen(true);
+    };
+    const handleCloseDeleteDialog = () => {
+        setDeleteOpen(false);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleClickUpdateDialog = () => {
+        setEditOpen(true);
+    };
+    const handleCloseUpdateDialog = () => {
+        setEditOpen(false);
     };
 
 
@@ -82,11 +92,27 @@ export default function JobListComponent() {
 
     function handle_click_delete_job(target_index: number) {
         setJobData(jobsData.filter((_: any, index: any) => index !== target_index));
+        setDeleteOpen(false)
         toast.success("Job deleted successfully");
+    }
+
+    function handle_click_edit_status(target_index: number, new_status: string) {
+        jobsData[target_index].status = new_status;
+        setJobData(jobsData);
+        setEditOpen(false);
+        toast.success("Job status updated successfully");
     }
 
     function handle_change_job_status(event: React.ChangeEvent<{ value: unknown }>) {
         setJobStatus(event.target.value as string);
+    }
+
+    function handle_change_search_status(event: React.ChangeEvent<{ value: unknown }>) {
+        setSearchStatus(event.target.value as string);
+    }
+
+    function handle_change_update_status(event: React.ChangeEvent<{ value: unknown }>) {
+        setUpdateStatus(event.target.value as string);
     }
 
 
@@ -113,7 +139,7 @@ export default function JobListComponent() {
                             <Typography variant="caption"
                                         textAlign="right"
                                         color={"#B2AEAE"}
-                                        sx={{flex: 1}}>{jobName?.length || 0}/200</Typography>
+                                        sx={{flex: 1}}>{jobName?.length || 0}/255</Typography>
                         </Box>
                     </Box>
 
@@ -126,6 +152,7 @@ export default function JobListComponent() {
                         onChange={handle_change_job_status}
                         sx={{ml: 2, width: "auto"}}>
                         {
+
                             jobPriority.map((option: any) => {
                                 return (
                                     <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
@@ -145,11 +172,15 @@ export default function JobListComponent() {
 
             <Stack sx={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <Typography>Job List</Typography>
-                <Typography>(3/3)</Typography>
+                <Typography>({jobsData.length + "/" + jobsData.length})</Typography>
             </Stack>
             <JobListContainer>
                 <TextField
                     label="Job Name"
+                    value={searchJob}
+                    onChange={(event) => {
+                        setSearchJob(event.target.value)
+                    }}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
@@ -159,16 +190,30 @@ export default function JobListComponent() {
                     }}
                 />
                 <TextField select
+                           value={searchStatus}
+                           onChange={handle_change_search_status}
                            label="Job Priority(All)"
-                           sx={{ml: 2}}>
+                           sx={{ml: 2}}
+                >
                     {
                         jobPriority.map((option: any) => {
                             return (
-                                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
+                                <MenuItem key={option.value} value={option.value}
+                                >{option.label}</MenuItem>
                             )
                         })
                     }
                 </TextField>
+                {
+                    searchJob || searchStatus ?
+                        <Button onClick={() => {
+
+                            setSearchJob("")
+                            setSearchStatus("")
+                        }}>reset filters</Button> : null
+                }
+
+
             </JobListContainer>
             <TableContainer component={Paper}>
                 <Table aria-label="customized table">
@@ -179,9 +224,20 @@ export default function JobListComponent() {
                             <StyledTableCell align="right">Action</StyledTableCell>
                         </TableRow>
                     </TableHead>
-
                     <TableBody>
-                        {jobsData?.map((row: any, index: any) => (
+                        {jobsData?.filter((e: any) => {
+                            if (searchJob === "") {
+                                return e
+                            } else if (e.name.toLowerCase().includes(searchJob.toLowerCase())) {
+                                return e
+                            }
+                        }).filter((e: any) => {
+                            if (searchStatus === "") {
+                                return e
+                            } else if (e.status === searchStatus) {
+                                return e
+                            }
+                        }).map((row: any, index: any) => (
                             <>
                                 <StyledTableRow key={index}>
                                     <StyledTableCell width={"70%"}>
@@ -205,10 +261,10 @@ export default function JobListComponent() {
 
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        <IconButton onClick={handleClickOpen}>
+                                        <IconButton onClick={handleClickUpdateDialog}>
                                             <EditRounded/>
                                         </IconButton>
-                                        <IconButton onClick={() => handle_click_delete_job(index)}>
+                                        <IconButton onClick={handleClickOpenDeleteDialog}>
                                             <DeleteRounded/>
                                         </IconButton>
                                     </StyledTableCell>
@@ -216,14 +272,14 @@ export default function JobListComponent() {
                                 <Box>
                                     <Dialog
                                         fullScreen={fullScreen}
-                                        open={open}
-                                        onClose={handleClose}
+                                        open={deleteOpen || editOpen ? true : false}
+                                        onClose={deleteOpen ? handleCloseDeleteDialog : handleCloseUpdateDialog}
                                         aria-labelledby="responsive-dialog-title"
 
                                     >
                                         <DialogTitle
                                             sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                            {"JOB EDİT"}
+                                            {deleteOpen ? "JOB DELETE" : "JOB EDİT"}
                                         </DialogTitle>
                                         <DialogContent>
                                             <TextField
@@ -233,7 +289,8 @@ export default function JobListComponent() {
                                                 value={row.name}
                                             />
                                             <TextField select
-                                                       defaultValue={row.status}
+                                                       value={updateStatus}
+                                                       onChange={handle_change_update_status}
                                                        sx={{minWidth: "500px", margin: 3}}
                                             >
                                                 {
@@ -247,12 +304,22 @@ export default function JobListComponent() {
                                             </TextField>
                                         </DialogContent>
                                         <DialogActions>
-                                            <Button autoFocus onClick={handleClose}>
+                                            <Button autoFocus
+                                                    onClick={editOpen ? handleCloseUpdateDialog : handleCloseDeleteDialog}>
                                                 CANCEL
                                             </Button>
-                                            <Button onClick={handleClose} autoFocus>
-                                                SAVE
-                                            </Button>
+                                            {
+                                                deleteOpen ?
+                                                    <Button onClick={() => handle_click_delete_job(index)}
+                                                            autoFocus>
+                                                        DELETE
+                                                    </Button> :
+                                                    <Button
+                                                        onClick={() => handle_click_edit_status(index, updateStatus)}>
+                                                        UPDATE
+                                                    </Button>
+                                            }
+
                                         </DialogActions>
                                     </Dialog>
                                 </Box>
@@ -278,8 +345,6 @@ export default function JobListComponent() {
                     </Stack>
                     : null
             }
-
-
         </Stack>
     );
 }
