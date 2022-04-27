@@ -1,18 +1,23 @@
 import React from 'react';
-import {Box, Link} from "@mui/material";
-import {CodeRounded, IntegrationInstructionsRounded} from "@mui/icons-material";
-import {FooterCard, FooterContainer, FooterIcon, FooterLink, FooterText} from "./styles";
+import {Link} from "@mui/material";
+import {CodeRounded, GitHub, IntegrationInstructionsRounded, LinkedIn} from "@mui/icons-material";
+import {FooterCard, FooterContainer, FooterCopyright, FooterIcon, FooterLink, FooterText} from "./styles";
 
 export default function FooterComponent() {
     return (
         <>
-            <Box sx={{background: "black", width: "100%"}}>
+            <FooterCopyright>
                 <FooterText padding={"1rem"}>
-                    © {new Date().getFullYear()} <Link href={"https://www.linkedin.com/in/oguzhanbaltaa/"}
-                                                       target={"_blank"} color={"#fff"}>Oğuzhan
-                    Balta</Link>
+                    <Link href={"https://www.linkedin.com/in/oguzhanbaltaa/"}
+                          target={"_blank"} color={"#fff"}><LinkedIn/>
+                    </Link>
                 </FooterText>
-            </Box>
+                <FooterText padding={"1rem"}>
+                    <Link href={"https://github.com/oguzhanabalta"}
+                          target={"_blank"} color={"#fff"}><GitHub/>
+                    </Link>
+                </FooterText>
+            </FooterCopyright>
             <FooterContainer>
                 <FooterCard>
                     <FooterLink href={"https://github.com/oguzhanabalta/personal-job-tracking-app"} target={"_blank"}>
@@ -44,19 +49,12 @@ export default function FooterComponent() {
                     </FooterLink>
                 </FooterCard>
             </FooterContainer>
-            <Box sx={{
-                background: "#303841",
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
+            <FooterCopyright sx={{background: "black", width: "100%", display: "flex", justifyContent: "center"}}>
                 <FooterText padding={"1rem"}>
                     <Link href={"https://www.linkedin.com/in/oguzhanbaltaa/"}
-                          target={"_blank"} color={"#fff"}> © {new Date().getFullYear()} Oğuzhan
-                        Balta</Link>
+                          target={"_blank"} color={"#fff"}> Copyright© {new Date().getFullYear()} Oğuzhan Balta</Link>
                 </FooterText>
-            </Box>
+            </FooterCopyright>
         </>
 
     );

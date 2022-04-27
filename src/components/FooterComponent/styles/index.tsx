@@ -65,3 +65,13 @@ export const FooterIcon = styled(IconButton)`
     height: 15px;
   }
 `;
+
+export const FooterCopyright = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: #303841;
+  width: 100%;
+
+`;
