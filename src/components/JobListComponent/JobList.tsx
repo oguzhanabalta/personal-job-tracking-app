@@ -301,14 +301,14 @@ export default function JobListComponent() {
                                                 <TextField
                                                     disabled
                                                     label={`Job Name`}
-                                                    sx={{minWidth: "500px", margin: 3}}
+                                                    sx={{minWidth: "100%", margin: 3}}
                                                     value={row.name}
                                                 />
                                                 <TextField select
                                                            disabled={deleteOpen ? true : false}
                                                            value={updateStatus}
                                                            onChange={handle_change_update_status}
-                                                           sx={{minWidth: "500px", margin: 3}}
+                                                           sx={{minWidth: "100%", margin: 3}}
                                                 >
                                                     {
                                                         jobPriority.map((option: any) => {
