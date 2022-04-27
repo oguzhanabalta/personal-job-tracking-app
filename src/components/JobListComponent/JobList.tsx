@@ -22,8 +22,18 @@ import {DeleteRounded, EditRounded, SearchRounded} from "@mui/icons-material";
 import Paper from '@mui/material/Paper';
 import {toast} from "react-hot-toast";
 import Box from "@mui/material/Box";
-import {CreateButton, CreateIcon, StyledTableCell, StyledTableRow, Text, Title} from "./styles";
+import {
+    CreateButton,
+    CreateContainer,
+    CreateIcon,
+    JobListContainer,
+    StyledTableCell,
+    StyledTableRow,
+    Text,
+    Title
+} from "./styles";
 import {useTheme} from "@mui/system";
+import Image from "next/image";
 
 
 export default function JobListComponent() {
@@ -89,13 +99,7 @@ export default function JobListComponent() {
                     </Title>
                 </Box>
 
-                <Stack sx={{
-                    display: "grid",
-                    gridTemplateColumns: "3fr 2fr 1fr",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    mb: 8
-                }}>
+                <CreateContainer>
                     <TextField
                         id="standard-basic"
                         margin="normal"
@@ -124,7 +128,7 @@ export default function JobListComponent() {
                         <CreateIcon/>
                         create
                     </CreateButton>
-                </Stack>
+                </CreateContainer>
             </Stack>
 
 
@@ -132,15 +136,7 @@ export default function JobListComponent() {
                 <Typography>Job List</Typography>
                 <Typography>(3/3)</Typography>
             </Stack>
-            <Stack sx={{
-                background: "#f1f4ff",
-                borderRadius: "1rem 1rem 0px 0px",
-                border: "1px solid #e0e0e0",
-                display: "grid",
-                gridTemplateColumns: "3fr 1fr",
-                justifyContent: "space-between",
-                padding: "1rem",
-            }}>
+            <JobListContainer>
                 <TextField
                     label="Job Name"
                     InputProps={{
@@ -162,7 +158,7 @@ export default function JobListComponent() {
                         })
                     }
                 </TextField>
-            </Stack>
+            </JobListContainer>
             <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                     <TableHead>
@@ -175,20 +171,68 @@ export default function JobListComponent() {
 
                     <TableBody>
                         {jobsData?.map((row: any, index: any) => (
-                            <StyledTableRow key={index}>
-                                <StyledTableCell component="th" scope="row">
-                                    {row.name}
-                                </StyledTableCell>
-                                <StyledTableCell align="right">{row.status}</StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <IconButton onClick={handleClickOpen}>
-                                        <EditRounded/>
-                                    </IconButton>
-                                    <IconButton onClick={() => handle_click_delete_job(index)}>
-                                        <DeleteRounded/>
-                                    </IconButton>
-                                </StyledTableCell>
-                            </StyledTableRow>
+                            <>
+                                <StyledTableRow key={index}>
+                                    <StyledTableCell component="th" scope="row">
+                                        {row.name}
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">{row.status}</StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <IconButton onClick={handleClickOpen}>
+                                            <EditRounded/>
+                                        </IconButton>
+                                        <IconButton onClick={() => handle_click_delete_job(index)}>
+                                            <DeleteRounded/>
+                                        </IconButton>
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                                <Box>
+                                    <Dialog
+                                        fullScreen={fullScreen}
+                                        open={open}
+                                        onClose={handleClose}
+                                        aria-labelledby="responsive-dialog-title"
+
+                                    >
+                                        <DialogTitle
+                                            sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                            {"JOB EDİT"}
+                                        </DialogTitle>
+                                        <DialogContent>
+                                            <TextField
+                                                disabled
+                                                label={`Job Name`}
+                                                sx={{minWidth: "500px", margin: 3}}
+                                                value={row.name}
+                                            />
+                                            <TextField select
+                                                       defaultValue={row.status}
+                                                       sx={{minWidth: "500px", margin: 3}}
+                                            >
+                                                {
+                                                    jobPriority.map((option: any) => {
+                                                        return (
+                                                            <MenuItem key={option.value}
+                                                                      value={option.value}>{option.value}</MenuItem>
+                                                        )
+                                                    })
+                                                }
+                                            </TextField>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button autoFocus onClick={handleClose}>
+                                                CANCEL
+                                            </Button>
+                                            <Button onClick={handleClose} autoFocus>
+                                                SAVE
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </Box>
+
+                            </>
+
+
                         ))}
                     </TableBody>
                 </Table>
@@ -197,7 +241,10 @@ export default function JobListComponent() {
                 jobsData.length < 1 ?
                     <Stack display={"flex"} justifyContent={"center"} alignItems={"center"}>
 
-                        <img src="/empty_todos.svg"/>
+                        <Image src="/empty_todos.svg"
+                               alt="Picture of the author"
+                               width={1000}
+                               height={1000}/>
                         <Title>No Jobs Found</Title>
                         <Text>Here you will be able to see the jobs you have created and their
                             priorities.</Text>
@@ -205,39 +252,6 @@ export default function JobListComponent() {
                     : null
             }
 
-            <Dialog
-                fullScreen={fullScreen}
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="responsive-dialog-title"
-
-            >
-                <DialogTitle sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    {"JOB EDİT"}
-                </DialogTitle>
-                <DialogContent>
-                    <TextField
-                        disabled
-                        label={`Job Name`}
-                        sx={{minWidth: "500px", margin: 3}}
-                        value={jobName}
-                    />
-                    <TextField
-                        select
-                        label={`Job Priority`}
-                        sx={{minWidth: "500px", margin: 3}}
-                        value={jobName}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={handleClose}>
-                        CANCEL
-                    </Button>
-                    <Button onClick={handleClose} autoFocus>
-                        SAVE
-                    </Button>
-                </DialogActions>
-            </Dialog>
 
         </Stack>
     );

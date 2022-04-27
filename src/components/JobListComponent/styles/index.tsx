@@ -1,7 +1,7 @@
 import {styled} from "@mui/material/styles";
 import TableCell, {tableCellClasses} from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import {Button, Typography} from "@mui/material";
+import {Box, Button, Stack, Typography} from "@mui/material";
 import {AddBox} from "@mui/icons-material";
 
 export const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -43,16 +43,17 @@ export const Text = styled(Typography)`
 
 export const CreateButton = styled(Button)`
   display: flex;
-  justify-content: space-between;
+  margin-left: 2rem;
+  justify-content: space-evenly;
   align-items: center;
   padding: 0.7rem;
   height: auto;
   margin-top: 0.4rem;
-  margin-left: 1rem;
+
   font-size: 0.8rem;
   @media (max-width: 650px) {
-    border-radius: 1rem;
-    font-size: 0.5rem;
+    width: 100%;
+    margin-left: 0;
   }
 `;
 
@@ -60,7 +61,35 @@ export const CreateIcon = styled(AddBox)`
   width: 1.5rem;
   height: 1.5rem;
   @media (max-width: 650px) {
-    width: 1rem;
-    height: 1rem;
+
   }
 `;
+
+
+export const CreateContainer = styled(Box)`
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  @media (max-width: 650px) {
+    grid-template-columns: 2fr 1fr;
+  }
+`;
+
+
+export const JobListContainer = styled(Stack)`
+  background: #f1f4ff;
+  border-radius: 1rem 1rem 0px 0px;
+  border: 1px solid #e0e0e0;
+  display: grid;
+  width: 100%;
+  grid-template-columns: 3fr 1fr;
+  justify-content: space-between;
+  padding: 1rem;
+  @media (max-width: 650px) {
+    grid-template-columns: 3fr 2fr;
+  }
+`
+
+
