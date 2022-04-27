@@ -124,7 +124,8 @@ export default function JobListComponent() {
                         }
                     </TextField>
 
-                    <CreateButton variant={"contained"} onClick={handle_click_add_job}>
+                    <CreateButton variant={"contained"} onClick={handle_click_add_job}
+                                  disabled={jobName && jobStatus ? false : true}>
                         <CreateIcon/>
                         create
                     </CreateButton>
@@ -164,7 +165,7 @@ export default function JobListComponent() {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Job Name</StyledTableCell>
-                            <StyledTableCell align="right">Priority</StyledTableCell>
+                            <StyledTableCell>Priority</StyledTableCell>
                             <StyledTableCell align="right">Action</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -173,10 +174,26 @@ export default function JobListComponent() {
                         {jobsData?.map((row: any, index: any) => (
                             <>
                                 <StyledTableRow key={index}>
-                                    <StyledTableCell component="th" scope="row">
+                                    <StyledTableCell scope="row">
                                         {row.name}
                                     </StyledTableCell>
-                                    <StyledTableCell align="right">{row.status}</StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <Box sx={{
+                                            background: row.status === "High" ? "#FFA1A1" : row.status === "Medium" ? "#FFD59E" : "#B4FF9F",
+                                            padding: "0.3rem",
+                                            borderRadius: "1rem",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            width: "70px",
+                                            color: "white",
+                                            fontSize: "0.8rem",
+                                            fontWeight: "bold"
+                                        }}>
+                                            {row.status}
+                                        </Box>
+
+                                    </StyledTableCell>
                                     <StyledTableCell align="right">
                                         <IconButton onClick={handleClickOpen}>
                                             <EditRounded/>

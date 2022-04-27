@@ -51,8 +51,7 @@ export default function FooterComponent() {
             </FooterContainer>
             <FooterCopyright sx={{background: "black", width: "100%", display: "flex", justifyContent: "center"}}>
                 <FooterText padding={"1rem"}>
-                    <Link href={"https://www.linkedin.com/in/oguzhanbaltaa/"}
-                          target={"_blank"} color={"#fff"}> Copyright© {new Date().getFullYear()} Oğuzhan Balta</Link>
+                    Copyright© {new Date().getFullYear()} Oğuzhan Balta
                 </FooterText>
             </FooterCopyright>
         </>

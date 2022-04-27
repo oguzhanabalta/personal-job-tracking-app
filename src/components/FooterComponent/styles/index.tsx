@@ -18,8 +18,9 @@ export const FooterCard = styled(Box)`
 `;
 
 export const FooterText = styled(Typography)`
+  color: #fff;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   @media (max-width: 750px) {
     font-size: 0.6rem;
   }
