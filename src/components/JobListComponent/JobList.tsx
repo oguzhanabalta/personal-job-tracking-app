@@ -100,13 +100,23 @@ export default function JobListComponent() {
                 </Box>
 
                 <CreateContainer>
-                    <TextField
-                        id="standard-basic"
-                        margin="normal"
-                        value={jobName}
-                        onChange={(event) => setJobName(event.target.value)}
-                        label="Job Name"
-                    />
+                    <Box display={"flex"} flexDirection={"column"} mt={"20px"}>
+                        <TextField
+                            id="standard-basic"
+                            margin="normal"
+                            value={jobName}
+                            onChange={(event) => setJobName(event.target.value)}
+                            label="Job Name"
+                            InputProps={{inputProps: {maxLength: 255}}}
+                        />
+                        <Box gridColumn={2} display="flex">
+                            <Typography variant="caption"
+                                        textAlign="right"
+                                        color={"#B2AEAE"}
+                                        sx={{flex: 1}}>{jobName?.length || 0}/200</Typography>
+                        </Box>
+                    </Box>
+
                     <TextField
                         select
                         id="standard-basic"
@@ -174,7 +184,7 @@ export default function JobListComponent() {
                         {jobsData?.map((row: any, index: any) => (
                             <>
                                 <StyledTableRow key={index}>
-                                    <StyledTableCell scope="row">
+                                    <StyledTableCell width={"70%"}>
                                         {row.name}
                                     </StyledTableCell>
                                     <StyledTableCell align="right">

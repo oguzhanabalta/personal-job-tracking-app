@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "@mui/material";
 import {CodeRounded, GitHub, IntegrationInstructionsRounded, LinkedIn} from "@mui/icons-material";
-import {FooterCard, FooterContainer, FooterCopyright, FooterIcon, FooterLink, FooterText} from "./styles";
+import {FooterCard, FooterContainer, FooterCopyright, FooterLink, FooterText} from "./styles";
 
 export default function FooterComponent() {
     return (
@@ -21,29 +21,29 @@ export default function FooterComponent() {
             <FooterContainer>
                 <FooterCard>
                     <FooterLink href={"https://github.com/oguzhanabalta/personal-job-tracking-app"} target={"_blank"}>
-                        <FooterIcon>
-                            <IntegrationInstructionsRounded/>
-                        </FooterIcon>
+
+                        <IntegrationInstructionsRounded/>
+
                         <FooterText>
                             GitRepo
                         </FooterText>
                     </FooterLink>
                     <FooterLink href={"https://personal-job-tracking-app.vercel.app/"} target={"_blank"}>
-                        <FooterIcon>
-                            <CodeRounded/>
-                        </FooterIcon>
+
+                        <CodeRounded/>
+
                         <FooterText>Demo</FooterText>
                     </FooterLink>
                     <FooterLink href={"https://personal-job-tracking-app.vercel.app/"} target={"_blank"}>
-                        <FooterIcon>
-                            <CodeRounded/>
-                        </FooterIcon>
+
+                        <CodeRounded/>
+
                         <FooterText>Demo(Node.js API)</FooterText>
                     </FooterLink>
                     <FooterLink href={"https://personal-job-tracking-app.vercel.app/"} target={"_blank"}>
-                        <FooterIcon>
-                            <CodeRounded/>
-                        </FooterIcon>
+
+                        <CodeRounded/>
+
 
                         <FooterText>Demo(WebStorage)</FooterText>
                     </FooterLink>
