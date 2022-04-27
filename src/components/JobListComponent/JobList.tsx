@@ -282,26 +282,44 @@ export default function JobListComponent() {
                                             {deleteOpen ? "JOB DELETE" : "JOB EDİT"}
                                         </DialogTitle>
                                         <DialogContent>
-                                            <TextField
-                                                disabled
-                                                label={`Job Name`}
-                                                sx={{minWidth: "500px", margin: 3}}
-                                                value={row.name}
-                                            />
-                                            <TextField select
-                                                       value={updateStatus}
-                                                       onChange={handle_change_update_status}
-                                                       sx={{minWidth: "500px", margin: 3}}
-                                            >
+                                            <Box sx={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                flexDirection: "column"
+
+                                            }}>
+
+
                                                 {
-                                                    jobPriority.map((option: any) => {
-                                                        return (
-                                                            <MenuItem key={option.value}
-                                                                      value={option.value}>{option.value}</MenuItem>
-                                                        )
-                                                    })
+                                                    deleteOpen ? <DeleteRounded
+                                                            sx={{color: "#F4BBBB", width: "15%", height: "15%"}}/> :
+                                                        <EditRounded
+                                                            sx={{color: "#F4BBBB", width: "15%", height: "15%"}}
+                                                        />
                                                 }
-                                            </TextField>
+                                                <TextField
+                                                    disabled
+                                                    label={`Job Name`}
+                                                    sx={{minWidth: "500px", margin: 3}}
+                                                    value={row.name}
+                                                />
+                                                <TextField select
+                                                           disabled={deleteOpen ? true : false}
+                                                           value={updateStatus}
+                                                           onChange={handle_change_update_status}
+                                                           sx={{minWidth: "500px", margin: 3}}
+                                                >
+                                                    {
+                                                        jobPriority.map((option: any) => {
+                                                            return (
+                                                                <MenuItem key={option.value}
+                                                                          value={option.value}>{option.value}</MenuItem>
+                                                            )
+                                                        })
+                                                    }
+                                                </TextField>
+                                            </Box>
                                         </DialogContent>
                                         <DialogActions>
                                             <Button autoFocus
