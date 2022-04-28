@@ -76,6 +76,34 @@ export default function JobListComponent() {
     const handleCloseUpdateDialog = () => {
         setEditOpen(false);
     };
+    const fetchJobs = async () => {
+        const response = await fetch("/api/jobs", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        const data = await response.json();
+        setJobData(data);
+    };
+
+
+    const submitJobs = async () => {
+        const job = {
+            id: jobsData.length + 1,
+            name: jobName,
+            status: jobStatus,
+        };
+        const response = await fetch("/api/jobs", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({job})
+        });
+        const data = await response.json();
+        console.log(data)
+    }
 
 
     function handle_click_add_job() {
@@ -161,7 +189,7 @@ export default function JobListComponent() {
                         }
                     </TextField>
 
-                    <CreateButton variant={"contained"} onClick={handle_click_add_job}
+                    <CreateButton variant={"contained"} onClick={submitJobs}
                                   disabled={jobName && jobStatus ? false : true}>
                         <CreateIcon/>
                         create
