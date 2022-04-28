@@ -34,13 +34,13 @@ export default function FooterComponent() {
 
                         <FooterText>Demo</FooterText>
                     </FooterLink>
-                    <FooterLink href={"https://personal-job-tracking-app.vercel.app/"} target={"_blank"}>
+                    <FooterLink href={"https://personal-job-tracking-64u5964sz-oguzhanabalta.vercel.app/"} target={"_blank"}>
 
                         <CodeRounded/>
 
                         <FooterText>Demo(Node.js API)</FooterText>
                     </FooterLink>
-                    <FooterLink href={"https://personal-job-tracking-app.vercel.app/"} target={"_blank"}>
+                    <FooterLink href={"https://personal-job-tracking-ni4m7ob5w-oguzhanabalta.vercel.app/"} target={"_blank"}>
 
                         <CodeRounded/>
 
