@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TableRow from '@mui/material/TableRow';
 import {
     Button,
@@ -36,8 +36,19 @@ import {useTheme} from "@mui/system";
 import Image from "next/image";
 
 
+// const getLocalJobs = () => {
+//     let localJobs = localStorage.getItem("jobData");
+//     console.log(localJobs);
+//     if (localJobs) {
+//         return JSON.parse(localJobs);
+//     } else {
+//         return [];
+//     }
+// }
+
 export default function JobListComponent() {
     const [jobsData, setJobData] = useState<any>([]);
+
     const jobPriority = [
         {
             value: 'High',
@@ -52,6 +63,7 @@ export default function JobListComponent() {
             label: 'Low'
         }
     ];
+
 
     const [jobName, setJobName] = useState<string>("");
     const [jobStatus, setJobStatus] = useState("High");
@@ -84,11 +96,18 @@ export default function JobListComponent() {
             name: jobName,
             status: jobStatus,
         };
-        jobsData.push(newJob);
+        setJobData([...jobsData, newJob]);
         setJobName("");
         setJobStatus("");
         toast.success("Job added successfully");
+        localStorage.setItem("jobData", JSON.stringify(jobsData));
+
     }
+
+    useEffect(() => {
+        localStorage.setItem("jobData", JSON.stringify(jobsData));
+    }, [jobsData])
+
 
     function handle_click_delete_job(target_index: number) {
         setJobData(jobsData.filter((_: any, index: any) => index !== target_index));
