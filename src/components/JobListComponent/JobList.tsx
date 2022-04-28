@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TableRow from '@mui/material/TableRow';
 import {
     Button,
@@ -76,7 +76,7 @@ export default function JobListComponent() {
     const handleCloseUpdateDialog = () => {
         setEditOpen(false);
     };
-    const fetchJobs = async () => {
+    async function fetchJobs() {
         const response = await fetch("/api/jobs", {
             method: "GET",
             headers: {
@@ -103,26 +103,26 @@ export default function JobListComponent() {
         });
         const data = await response.json();
         console.log(data)
-    }
-
-
-    function handle_click_add_job() {
-        const newJob = {
-            id: jobsData.length + 1,
-            name: jobName,
-            status: jobStatus,
-        };
-        jobsData.push(newJob);
         setJobName("");
         setJobStatus("");
-        toast.success("Job added successfully");
+        fetchJobs();
     }
 
-    function handle_click_delete_job(target_index: number) {
-        setJobData(jobsData.filter((_: any, index: any) => index !== target_index));
+
+    const deleteJobs = async (jobId: number) => {
+        const response = await fetch(`/api/jobs/${jobId}`, {
+            method: "DELETE",
+        });
+        const data = await response.json();
+        console.log(data)
         setDeleteOpen(false)
-        toast.success("Job deleted successfully");
+        fetchJobs()
     }
+
+
+
+
+
 
     function handle_click_edit_status(target_index: number, new_status: string) {
         jobsData[target_index].status = new_status;
@@ -144,7 +144,10 @@ export default function JobListComponent() {
     }
 
 
+
+
     return (
+
         <Stack sx={{display: "flex", flexDirection: "column", mt: 3, mb: 30}}>
             <Stack>
                 <Box sx={{display: "flex", justifyContent: "flex-start"}}>
@@ -170,7 +173,6 @@ export default function JobListComponent() {
                                         sx={{flex: 1}}>{jobName?.length || 0}/255</Typography>
                         </Box>
                     </Box>
-
                     <TextField
                         select
                         id="standard-basic"
@@ -356,12 +358,12 @@ export default function JobListComponent() {
                                             </Button>
                                             {
                                                 deleteOpen ?
-                                                    <Button onClick={() => handle_click_delete_job(index)}
+                                                    <Button onClick={()=> deleteJobs(row.jobId)}
                                                             autoFocus>
                                                         DELETE
                                                     </Button> :
                                                     <Button
-                                                        onClick={() => handle_click_edit_status(index, updateStatus)}>
+                                                        onClick={()=>handle_click_edit_status(index, updateStatus)}>
                                                         UPDATE
                                                     </Button>
                                             }

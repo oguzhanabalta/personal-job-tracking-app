@@ -1,6 +1,6 @@
 export const jobs = [
     {
-        id: 1,
+        jobId: 1,
         name: "Software Engineer",
         status: "High",
     },
